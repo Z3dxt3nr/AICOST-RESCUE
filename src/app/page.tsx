@@ -1,65 +1,206 @@
-import Image from "next/image";
+"use client";
+
+import { useMemo, useState } from "react";
+import { ArrowRight, BadgeCheck, BarChart3, CheckCircle2, ClipboardList, DollarSign, Gauge, Mail, Rocket, ShieldCheck, Sparkles, Zap } from "lucide-react";
+import { calculateAuditEstimate } from "@/lib/audit-calculator";
+
+const contactEmail = "kaizenworkflow@proton.me";
+
+const tools = [
+  ["cursor", "Cursor"],
+  ["copilot", "GitHub Copilot"],
+  ["claude-code", "Claude Code"],
+  ["openai-api", "OpenAI API"],
+  ["anthropic-api", "Anthropic API"],
+  ["gemini", "Gemini"],
+  ["openrouter", "OpenRouter"],
+];
+
+const workloads = [
+  ["coding", "Coding assistants"],
+  ["agents", "Agent workflows"],
+  ["support", "Customer support"],
+  ["documents", "Document processing"],
+  ["marketing", "Marketing/content"],
+];
 
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+  const [monthlySpendAud, setMonthlySpendAud] = useState(1200);
+  const [teamSize, setTeamSize] = useState(6);
+  const [toolsUsed, setToolsUsed] = useState<string[]>(["cursor", "claude-code", "openai-api"]);
+  const [selectedWorkloads, setSelectedWorkloads] = useState<string[]>(["coding", "agents", "documents"]);
+  const [hasApiUsage, setHasApiUsage] = useState(true);
+
+  const estimate = useMemo(
+    () => calculateAuditEstimate({ monthlySpendAud, teamSize, toolsUsed, workloads: selectedWorkloads, hasApiUsage }),
+    [monthlySpendAud, teamSize, toolsUsed, selectedWorkloads, hasApiUsage]
   );
+
+  const mailto = `mailto:${contactEmail}?subject=${encodeURIComponent("AI Cost Audit request")}&body=${encodeURIComponent(
+    `Hi Leon,\n\nI'd like an AI Cost Audit.\n\nMonthly AI spend: AUD $${monthlySpendAud}\nTeam size: ${teamSize}\nTools: ${toolsUsed.join(", ")}\nWorkloads: ${selectedWorkloads.join(", ")}\nHas API usage: ${hasApiUsage ? "yes" : "no"}\nEstimated savings: AUD $${estimate.estimatedSavingsLowAud}-$${estimate.estimatedSavingsHighAud}/month\nRecommended tier: ${estimate.recommendedTier}\n\nMy main concern is:\n`
+  )}`;
+
+  function toggle(value: string, list: string[], setter: (next: string[]) => void) {
+    setter(list.includes(value) ? list.filter((item) => item !== value) : [...list, value]);
+  }
+
+  return (
+    <main className="min-h-screen bg-slate-950 text-white">
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(99,102,241,0.35),_transparent_35%),radial-gradient(circle_at_top_right,_rgba(16,185,129,0.22),_transparent_35%)]" />
+        <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28">
+          <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            <div>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-200">
+                <Sparkles className="h-4 w-4" />
+                Built for teams surprised by AI tool and token bills
+              </div>
+              <h1 className="max-w-4xl text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl">
+                Cut your AI spend without slowing your team down.
+              </h1>
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+                We audit your Cursor, Copilot, Claude, OpenAI, Anthropic, Gemini and agent workflows, then show exactly where to reduce cost using routing, caching, prompt compression, cheaper models, and smarter usage rules.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <a href="#calculator" className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-400 px-6 py-4 font-bold text-slate-950 shadow-lg shadow-emerald-400/20 transition hover:bg-emerald-300">
+                  Run free cost check <ArrowRight className="h-5 w-5" />
+                </a>
+                <a href={mailto} className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-6 py-4 font-semibold text-white transition hover:bg-white/10">
+                  Request audit <Mail className="h-5 w-5" />
+                </a>
+              </div>
+              <div className="mt-8 grid max-w-xl grid-cols-3 gap-3 text-sm text-slate-300">
+                <Stat value="20–70%" label="potential savings" />
+                <Stat value="48 hrs" label="MVP audit turnaround" />
+                <Stat value="AUD" label="Australia-first pricing" />
+              </div>
+            </div>
+
+            <div id="calculator" className="rounded-3xl border border-white/10 bg-white/10 p-5 shadow-2xl backdrop-blur-xl">
+              <div className="mb-5 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-emerald-300">Free AI Cost Self-Check</p>
+                  <h2 className="text-2xl font-bold">Estimate your waste band</h2>
+                </div>
+                <Gauge className="h-9 w-9 text-emerald-300" />
+              </div>
+
+              <div className="space-y-5">
+                <Field label={`Monthly AI spend: AUD $${monthlySpendAud.toLocaleString()}`}>
+                  <input className="w-full accent-emerald-400" type="range" min="0" max="10000" step="50" value={monthlySpendAud} onChange={(e) => setMonthlySpendAud(Number(e.target.value))} />
+                </Field>
+                <Field label={`Team size: ${teamSize}`}>
+                  <input className="w-full accent-emerald-400" type="range" min="1" max="50" step="1" value={teamSize} onChange={(e) => setTeamSize(Number(e.target.value))} />
+                </Field>
+                <Field label="Tools used">
+                  <div className="grid grid-cols-2 gap-2">
+                    {tools.map(([value, label]) => (
+                      <button key={value} onClick={() => toggle(value, toolsUsed, setToolsUsed)} className={`rounded-lg border px-3 py-2 text-left text-sm transition ${toolsUsed.includes(value) ? "border-emerald-300 bg-emerald-300/20 text-emerald-100" : "border-white/10 bg-slate-900/60 text-slate-300"}`}>
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </Field>
+                <Field label="Main workloads">
+                  <div className="grid grid-cols-2 gap-2">
+                    {workloads.map(([value, label]) => (
+                      <button key={value} onClick={() => toggle(value, selectedWorkloads, setSelectedWorkloads)} className={`rounded-lg border px-3 py-2 text-left text-sm transition ${selectedWorkloads.includes(value) ? "border-indigo-300 bg-indigo-300/20 text-indigo-100" : "border-white/10 bg-slate-900/60 text-slate-300"}`}>
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </Field>
+                <label className="flex items-center gap-3 rounded-xl border border-white/10 bg-slate-900/60 p-3 text-sm text-slate-200">
+                  <input type="checkbox" checked={hasApiUsage} onChange={(e) => setHasApiUsage(e.target.checked)} className="h-4 w-4 accent-emerald-400" />
+                  We use API tokens / agent workflows, not just subscriptions
+                </label>
+              </div>
+
+              <div className="mt-6 rounded-2xl bg-slate-950 p-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-sm text-slate-400">Waste band</p>
+                    <p className="text-3xl font-black capitalize text-emerald-300">{estimate.wasteBand}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-slate-400">Potential monthly savings</p>
+                    <p className="text-2xl font-black">AUD ${estimate.estimatedSavingsLowAud.toLocaleString()}–${estimate.estimatedSavingsHighAud.toLocaleString()}</p>
+                  </div>
+                </div>
+                <div className="mt-4 rounded-xl border border-emerald-400/20 bg-emerald-400/10 p-3 text-sm text-emerald-100">
+                  Recommended next step: <strong>{estimate.recommendedTier}</strong>
+                </div>
+                <ul className="mt-4 space-y-2 text-sm text-slate-300">
+                  {estimate.priorityRecommendations.slice(0, 3).map((rec) => (
+                    <li key={rec} className="flex gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />{rec}</li>
+                  ))}
+                </ul>
+                <a href={mailto} className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 font-bold text-slate-950 transition hover:bg-slate-200">
+                  Send my result and request audit <Mail className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="grid gap-5 md:grid-cols-3">
+          <Feature icon={<DollarSign />} title="Subscription + token spend" text="Map monthly seats, API usage, hidden overages, duplicate tools, and frontier-model dependency." />
+          <Feature icon={<BarChart3 />} title="Model substitution plan" text="Identify where cheaper models, open-weight options, or routers can replace expensive calls safely." />
+          <Feature icon={<ShieldCheck />} title="Safe implementation path" text="Separate low-risk tasks from high-risk review tasks so cost reduction does not damage output quality." />
+        </div>
+      </section>
+
+      <section className="border-y border-white/10 bg-white/[0.03]">
+        <div className="mx-auto max-w-7xl px-6 py-16">
+          <div className="max-w-3xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-300">Audit deliverables</p>
+            <h2 className="mt-3 text-4xl font-black">A practical report, not vague AI advice.</h2>
+          </div>
+          <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {["Current stack and cost drivers", "Quick wins in 7 days", "Model/tool substitutions", "30-day implementation plan"].map((item) => (
+              <div key={item} className="rounded-2xl border border-white/10 bg-slate-900 p-5">
+                <ClipboardList className="mb-4 h-6 w-6 text-emerald-300" />
+                <p className="font-semibold">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-16">
+        <div className="grid gap-5 lg:grid-cols-3">
+          <Price name="Free Self-Check" price="$0" items={["Calculator result", "Waste band estimate", "Recommended audit tier"]} cta="Run calculator" href="#calculator" />
+          <Price name="Team Audit" price="AUD $499" highlight items={["Stack/spend review", "Savings estimate", "Replacement recommendations", "30-day action plan"]} cta="Request audit" href={mailto} />
+          <Price name="Implementation Sprint" price="From AUD $1,500" items={["Hands-on tool changes", "Routing/caching setup", "Workflow cost controls", "Follow-up savings review"]} cta="Discuss sprint" href={mailto} />
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-5xl px-6 pb-20 text-center">
+        <Rocket className="mx-auto mb-5 h-10 w-10 text-emerald-300" />
+        <h2 className="text-4xl font-black">Validate first. Productise later.</h2>
+        <p className="mx-auto mt-4 max-w-2xl text-slate-300">The first version is deliberately service-first: get real audits, prove savings, then turn repeated work into SaaS features like spend monitoring, token alerts, and smart routing.</p>
+        <a href={mailto} className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-400 px-6 py-4 font-bold text-slate-950 hover:bg-emerald-300">
+          Start with a pilot audit <ArrowRight className="h-5 w-5" />
+        </a>
+      </section>
+    </main>
+  );
+}
+
+function Stat({ value, label }: { value: string; label: string }) {
+  return <div className="rounded-2xl border border-white/10 bg-white/5 p-3"><p className="font-black text-white">{value}</p><p className="text-xs text-slate-400">{label}</p></div>;
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return <div><label className="mb-2 block text-sm font-semibold text-slate-200">{label}</label>{children}</div>;
+}
+
+function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
+  return <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6"><div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-400/10 text-emerald-300">{icon}</div><h3 className="text-xl font-bold">{title}</h3><p className="mt-3 text-slate-300">{text}</p></div>;
+}
+
+function Price({ name, price, items, cta, href, highlight = false }: { name: string; price: string; items: string[]; cta: string; href: string; highlight?: boolean }) {
+  return <div className={`rounded-3xl border p-6 ${highlight ? "border-emerald-300 bg-emerald-300/10" : "border-white/10 bg-white/[0.04]"}`}><div className="flex items-center justify-between"><h3 className="text-xl font-bold">{name}</h3>{highlight && <BadgeCheck className="h-6 w-6 text-emerald-300" />}</div><p className="mt-4 text-3xl font-black">{price}</p><ul className="mt-6 space-y-3 text-sm text-slate-300">{items.map((item) => <li key={item} className="flex gap-2"><Zap className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />{item}</li>)}</ul><a href={href} className={`mt-6 inline-flex w-full items-center justify-center rounded-xl px-4 py-3 font-bold ${highlight ? "bg-emerald-400 text-slate-950 hover:bg-emerald-300" : "bg-white text-slate-950 hover:bg-slate-200"}`}>{cta}</a></div>;
 }
