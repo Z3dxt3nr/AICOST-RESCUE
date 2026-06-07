@@ -36,8 +36,8 @@ export default function Home() {
     [monthlySpendAud, teamSize, toolsUsed, selectedWorkloads, hasApiUsage]
   );
 
-  const mailto = `mailto:${contactEmail}?subject=${encodeURIComponent("AI Cost Audit request")}&body=${encodeURIComponent(
-    `Hi Leon,\n\nI'd like an AI Cost Audit.\n\nMonthly AI spend: AUD $${monthlySpendAud}\nTeam size: ${teamSize}\nTools: ${toolsUsed.join(", ")}\nWorkloads: ${selectedWorkloads.join(", ")}\nHas API usage: ${hasApiUsage ? "yes" : "no"}\nEstimated savings: AUD $${estimate.estimatedSavingsLowAud}-$${estimate.estimatedSavingsHighAud}/month\nRecommended tier: ${estimate.recommendedTier}\n\nMy main concern is:\n`
+  const mailto = `mailto:${contactEmail}?subject=${encodeURIComponent("AICost Rescue audit request")}&body=${encodeURIComponent(
+    `Hi Leon,\n\nI'd like an AICost Rescue audit.\n\nMonthly AI spend: AUD $${monthlySpendAud}\nTeam size: ${teamSize}\nTools: ${toolsUsed.join(", ")}\nWorkloads: ${selectedWorkloads.join(", ")}\nHas API usage: ${hasApiUsage ? "yes" : "no"}\nEstimated savings: AUD $${estimate.estimatedSavingsLowAud}-$${estimate.estimatedSavingsHighAud}/month\nRecommended tier: ${estimate.recommendedTier}\n\nMy main concern is:\n`
   )}`;
 
   function toggle(value: string, list: string[], setter: (next: string[]) => void) {
@@ -53,25 +53,28 @@ export default function Home() {
             <div>
               <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-200">
                 <Sparkles className="h-4 w-4" />
-                Built for teams surprised by AI tool and token bills
+                For dev teams and agencies using AI coding tools, APIs, and agents
               </div>
               <h1 className="max-w-4xl text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl">
-                Cut your AI spend without slowing your team down.
+                Find and cut wasted AI spend in 48 hours.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-                We audit your Cursor, Copilot, Claude, OpenAI, Anthropic, Gemini and agent workflows, then show exactly where to reduce cost using routing, caching, prompt compression, cheaper models, and smarter usage rules.
+                AICost Rescue audits Cursor, Copilot, Claude Code, OpenAI, Anthropic, Gemini, OpenRouter, and agent workflows to show where teams can reduce spend with safer model choices, caching, prompt compression, and usage rules.
               </p>
+              <div className="mt-8 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4 text-sm text-emerald-50">
+                Launch offer: first 10 audits are handled manually by Leon at founding pricing, with a practical savings report instead of vague AI advice.
+              </div>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a href="#calculator" className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-400 px-6 py-4 font-bold text-slate-950 shadow-lg shadow-emerald-400/20 transition hover:bg-emerald-300">
                   Run free cost check <ArrowRight className="h-5 w-5" />
                 </a>
                 <a href={mailto} className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-6 py-4 font-semibold text-white transition hover:bg-white/10">
-                  Request audit <Mail className="h-5 w-5" />
+                  Request founding audit <Mail className="h-5 w-5" />
                 </a>
               </div>
               <div className="mt-8 grid max-w-xl grid-cols-3 gap-3 text-sm text-slate-300">
                 <Stat value="20–70%" label="potential savings" />
-                <Stat value="48 hrs" label="MVP audit turnaround" />
+                <Stat value="48 hrs" label="audit turnaround" />
                 <Stat value="AUD" label="Australia-first pricing" />
               </div>
             </div>
@@ -145,10 +148,13 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid gap-5 md:grid-cols-3">
-          <Feature icon={<DollarSign />} title="Subscription + token spend" text="Map monthly seats, API usage, hidden overages, duplicate tools, and frontier-model dependency." />
-          <Feature icon={<BarChart3 />} title="Model substitution plan" text="Identify where cheaper models, open-weight options, or routers can replace expensive calls safely." />
-          <Feature icon={<ShieldCheck />} title="Safe implementation path" text="Separate low-risk tasks from high-risk review tasks so cost reduction does not damage output quality." />
+        <div className="mb-8 max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-300">Who it is for</p>
+          <h2 className="mt-3 text-4xl font-black">Built for the teams most likely to feel AI cost creep first.</h2>
+        </div>
+        <div className="grid gap-5 md:grid-cols-2">
+          <Feature icon={<BarChart3 />} title="Dev teams using AI coding tools" text="Cursor, Copilot, Claude Code, ChatGPT Team, OpenAI/Anthropic APIs, CI agents, documentation bots, code review helpers, and internal dev workflows." />
+          <Feature icon={<DollarSign />} title="Agencies and consultants using AI for client work" text="Teams doing research, copy, automation, support, proposal writing, reporting, content, and delivery work where AI usage can quietly eat project margin." />
         </div>
       </section>
 
@@ -170,19 +176,24 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid gap-5 lg:grid-cols-3">
-          <Price name="Free Self-Check" price="$0" items={["Calculator result", "Waste band estimate", "Recommended audit tier"]} cta="Run calculator" href="#calculator" />
-          <Price name="Team Audit" price="AUD $499" highlight items={["Stack/spend review", "Savings estimate", "Replacement recommendations", "30-day action plan"]} cta="Request audit" href={mailto} />
+        <div className="mb-8 max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-300">Founding pricing</p>
+          <h2 className="mt-3 text-4xl font-black">Start manual. Prove savings. Then productise.</h2>
+        </div>
+        <div className="grid gap-5 lg:grid-cols-4">
+          <Price name="Free Self-Check" price="AUD $0" items={["Calculator result", "Waste band estimate", "Recommended audit tier"]} cta="Run calculator" href="#calculator" />
+          <Price name="Solo / Founder Audit" price="AUD $149" items={["1-person or tiny-team review", "Tool/subscription check", "Top 5 savings ideas", "7-day action plan"]} cta="Request solo audit" href={mailto} />
+          <Price name="Team / Agency Audit" price="AUD $499" highlight items={["Stack/spend review", "Savings estimate", "Replacement recommendations", "30-day action plan"]} cta="Request team audit" href={mailto} />
           <Price name="Implementation Sprint" price="From AUD $1,500" items={["Hands-on tool changes", "Routing/caching setup", "Workflow cost controls", "Follow-up savings review"]} cta="Discuss sprint" href={mailto} />
         </div>
       </section>
 
       <section className="mx-auto max-w-5xl px-6 pb-20 text-center">
         <Rocket className="mx-auto mb-5 h-10 w-10 text-emerald-300" />
-        <h2 className="text-4xl font-black">Validate first. Productise later.</h2>
-        <p className="mx-auto mt-4 max-w-2xl text-slate-300">The first version is deliberately service-first: get real audits, prove savings, then turn repeated work into SaaS features like spend monitoring, token alerts, and smart routing.</p>
+        <h2 className="text-4xl font-black">Need to know if an audit is worth it?</h2>
+        <p className="mx-auto mt-4 max-w-2xl text-slate-300">Run the free self-check, then email the result. If there is no realistic saving opportunity, we will say that instead of forcing a paid audit.</p>
         <a href={mailto} className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-400 px-6 py-4 font-bold text-slate-950 hover:bg-emerald-300">
-          Start with a pilot audit <ArrowRight className="h-5 w-5" />
+          Start with a founding audit <ArrowRight className="h-5 w-5" />
         </a>
       </section>
     </main>
