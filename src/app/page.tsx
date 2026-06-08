@@ -5,6 +5,7 @@ import { ArrowRight, BadgeCheck, BarChart3, CheckCircle2, ClipboardList, DollarS
 import { calculateAuditEstimate } from "@/lib/audit-calculator";
 
 const contactEmail = "kaizenworkflow@proton.me";
+const teamAuditCheckoutUrl = "https://buy.stripe.com/5kQ3cx0JM5FT4it5y687K01";
 
 const tools = [
   ["cursor", "Cursor"],
@@ -183,7 +184,7 @@ export default function Home() {
         <div className="grid gap-5 lg:grid-cols-4">
           <Price name="Free Self-Check" price="AUD $0" items={["Calculator result", "Waste band estimate", "Recommended audit tier"]} cta="Run calculator" href="#calculator" />
           <Price name="Solo / Founder Audit" price="AUD $149" items={["1-person or tiny-team review", "Tool/subscription check", "Top 5 savings ideas", "7-day action plan"]} cta="Request solo audit" href={mailto} />
-          <Price name="Team / Agency Audit" price="AUD $499" highlight items={["Stack/spend review", "Savings estimate", "Replacement recommendations", "30-day action plan"]} cta="Request team audit" href={mailto} />
+          <Price name="Team / Agency Audit" price="AUD $499" highlight items={["Secure Stripe checkout", "Stack/spend review", "Savings estimate", "Replacement recommendations", "30-day action plan"]} cta="Buy team audit" href={teamAuditCheckoutUrl} />
           <Price name="Implementation Sprint" price="From AUD $1,500" items={["Hands-on tool changes", "Routing/caching setup", "Workflow cost controls", "Follow-up savings review"]} cta="Discuss sprint" href={mailto} />
         </div>
       </section>

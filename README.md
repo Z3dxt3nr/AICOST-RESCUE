@@ -11,6 +11,7 @@ Help dev teams, agencies, founders, and SMBs cut AI tool/API costs across Cursor
 - Landing page
 - Interactive AI cost self-check calculator
 - Mailto-based audit request CTA
+- Stripe checkout for Team / Agency Audit
 - Report template
 - Outreach scripts
 - Tested calculator logic
